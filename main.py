@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from db import database, metadata, engine
+from fastapi_pagination import add_pagination
 
 from src.content.api import video_router
 from src.user.routers import user_router
@@ -30,3 +31,4 @@ app.include_router(user_router)
 app.include_router(product_router)
 app.include_router(video_router)
 app.include_router(follower_router)
+add_pagination(app)

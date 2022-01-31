@@ -2,7 +2,7 @@ from typing import Optional, Union, Dict
 
 import ormar
 from db import MainMeta
-from user.models import User
+from src.user.models import User
 
 
 class Follower(ormar.Model):

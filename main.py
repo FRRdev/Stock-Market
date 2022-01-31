@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from db import database, metadata, engine
 
-from content.api import video_router
-from user.routers import user_router
-from followers.api import follower_router
-from product.api import product_router
+from src.content.api import video_router
+from src.user.routers import user_router
+from src.followers.api import follower_router
+from src.product.api import product_router
 
 app = FastAPI()
 

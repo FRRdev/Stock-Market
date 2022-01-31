@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from user.schemas import UserOut
+from src.user.schemas import UserOut
 
 
 class FollowerCreate(BaseModel):

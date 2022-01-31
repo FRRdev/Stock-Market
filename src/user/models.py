@@ -3,7 +3,7 @@ import ormar
 from fastapi_users.db import OrmarBaseUserModel, OrmarUserDatabase
 
 from db import MainMeta
-from user.schemas import UserDB
+from src.user.schemas import UserDB
 
 
 class User(OrmarBaseUserModel):

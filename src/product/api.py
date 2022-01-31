@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Form, UploadFile, File, Depends
 import datetime
 
-from .models import Product
-from user.models import User
-from user.auth import current_active_user
+from src.user.models import User
+from src.user.auth import current_active_user
 from .services import save_product
 from .schemas import UploadProduct
 

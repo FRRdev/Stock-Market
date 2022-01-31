@@ -6,8 +6,8 @@ from pathlib import Path
 from fastapi import UploadFile, BackgroundTasks, HTTPException, Request
 
 from .schemas import UploadVideo
-from .models import Video, User
-from product.models import Product
+from .models import Video
+from src.user.models import User
 
 
 async def save_video(user: User,

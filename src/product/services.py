@@ -1,11 +1,10 @@
-from typing import IO, Generator
 from uuid import uuid4
 
-from fastapi import UploadFile, BackgroundTasks, HTTPException, Request
+from fastapi import UploadFile, HTTPException
 import datetime
 import aiofiles
 
-from user.models import User
+from src.user.models import User
 from .models import Product
 from .schemas import UploadProduct
 

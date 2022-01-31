@@ -1,6 +1,6 @@
 from fastapi import Request
 
-from user.schemas import UserDB
+from src.user.schemas import UserDB
 
 
 def on_after_register(user: UserDB, request: Request):

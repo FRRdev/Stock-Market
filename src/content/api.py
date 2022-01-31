@@ -1,13 +1,14 @@
 from typing import List
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks, Request, Depends
+from fastapi import APIRouter, UploadFile, File, Form, BackgroundTasks, Request, Depends
 from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from .schemas import UploadVideo, GetVideo, Message, GetListVideo
-from .models import Video, User
+from src.user.models import User
+from .schemas import GetListVideo
+from .models import Video
 from .services import save_video, open_file
 
-from user.auth import current_active_user
+from src.user.auth import current_active_user
 
 video_router = APIRouter(tags=["video"])
 templates = Jinja2Templates(directory="templates")
@@ -78,14 +79,9 @@ async def add_like(video_pk: int, user: User = Depends(current_active_user)):
     await _video.update()
     return _video.like_count
 
-
-
-
 # @video_router.post('/img', status_code=201)
 # async def upload_image(files: List[UploadFile] = File(...)):
 #     for img in files:
 #         with open(f'{img.filename}', 'wb') as buffer:
 #             shutil.copyfileobj(img.file, buffer)
 #     return {'file_name': 'Good'}
-
-

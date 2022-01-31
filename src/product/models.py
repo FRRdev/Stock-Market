@@ -3,7 +3,7 @@ from typing import Optional, Union, Dict, List
 
 import ormar
 from db import MainMeta
-from user.models import User
+from src.user.models import User
 
 
 class Product(ormar.Model):

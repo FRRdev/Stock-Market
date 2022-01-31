@@ -1,10 +1,9 @@
-import schema as schema
 from fastapi import APIRouter, Depends
 from typing import List
 from . import schemas, models
-from user.models import User
+from src.user.models import User
 
-from user.auth import current_active_user
+from src.user.auth import current_active_user
 
 follower_router = APIRouter(prefix='/followers', tags=["followers"])
 

@@ -1,13 +1,12 @@
 from fastapi_users.authentication import JWTStrategy, AuthenticationBackend, BearerTransport
 from fastapi_users import BaseUserManager
-from user.schemas import UserDB, User, UserCreate, UserUpdate
 from fastapi import Request, Depends
 from typing import Optional
 from fastapi_users import FastAPIUsers
 
-from user.schemas import UserDB, User, UserCreate, UserUpdate
+from src.user.schemas import UserDB, UserCreate, UserUpdate
 
-from user.models import User
+from src.user.models import User
 from fastapi_users.db import OrmarBaseUserModel, OrmarUserDatabase
 
 SECRET = 'Sajdljfldsjlvsdjvnsjlvnldsvnljsdnvjlsfnvljsfnvlnfjvsfjvnsjfkvndsf'

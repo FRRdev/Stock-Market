@@ -4,8 +4,8 @@ from typing import Optional, Union, Dict, List
 import ormar
 from db import MainMeta
 
-from user.models import User
-from product.models import Product
+from src.user.models import User
+from src.product.models import Product
 
 
 class UserLike(ormar.Model):

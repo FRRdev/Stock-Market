@@ -1,8 +1,8 @@
 from fastapi.routing import APIRouter
 
 
-from user.auth import auth_backends
-from user.auth import fastapi_users
+from src.user.auth import auth_backends
+from src.user.auth import fastapi_users
 
 
 user_router = APIRouter()

@@ -1,13 +1,16 @@
-from fastapi import APIRouter, Form, UploadFile, File, Depends, Query
-import datetime
+from fastapi import APIRouter, Form, UploadFile, File, Depends, Query, Path
+from fastapi_pagination import Page, paginate
+from fastapi.responses import JSONResponse
+from sqlite3 import IntegrityError
 from typing import List
-from fastapi_pagination import Page, paginate, Params
+
+import datetime
 
 from src.user.models import User
 from src.user.auth import current_active_user
 from .services import save_product, update_product
-from .schemas import UploadProduct, ListProduct
-from .models import Product
+from .schemas import UploadProduct, ListProduct, UploadComment, ListComment
+from .models import Product, Comment
 
 product_router = APIRouter(prefix='/product', tags=['product'])
 
@@ -58,3 +61,30 @@ async def get_list_all_videos(
     """
     queryset = await Product.objects.select_related("user").all()
     return paginate(queryset)
+
+
+@product_router.post('/comment/{product_pk}', response_model=UploadComment)
+async def create_comment(
+        user: User = Depends(current_active_user),
+        product_pk: int = Path(...),
+        text: str = Form(...)
+):
+    """Create comment by product_pk
+    """
+    text_info = UploadComment(text=text)
+    try:
+        return await Comment.objects.create(user=user.dict(), product=product_pk, **text_info.dict())
+    except IntegrityError:
+        return JSONResponse({"error": "Invalid product_pk"})
+
+
+@product_router.get('/comment/{product_pk}', response_model=List[ListComment])
+async def get_list_comment(
+        user: User = Depends(current_active_user),
+        product_pk: int = Path(...),
+):
+    """Get list comment by product_pk
+    """
+    product = await Product.objects.prefetch_related("product_comments").get(pk=product_pk)
+    # queryset = product.product_comments
+    print(product)

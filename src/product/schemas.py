@@ -19,3 +19,10 @@ class ListProduct(BaseModel):
     deadline_time: datetime.datetime
 
 
+class UploadComment(BaseModel):
+    text: str
+
+
+class ListComment(BaseModel):
+    text: str
+    user: UserOut

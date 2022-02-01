@@ -3,6 +3,10 @@ import datetime
 from src.user.schemas import UserOut
 
 
+class IdProduct(BaseModel):
+    id: int
+
+
 class UploadProduct(BaseModel):
     name: str
     start_price: float

@@ -85,6 +85,4 @@ async def get_list_comment(
 ):
     """Get list comment by product_pk
     """
-    product = await Product.objects.prefetch_related("product_comments").get(pk=product_pk)
-    # queryset = product.product_comments
-    print(product)
+    return await Comment.objects.select_related("user").filter(product=product_pk).all()

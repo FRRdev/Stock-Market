@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from src.user.models import User
-from .schemas import GetListVideo
+from .schemas import GetListVideo, UploadVideo
 from .models import Video
 from .services import save_video, open_file
 
@@ -14,7 +14,7 @@ video_router = APIRouter(tags=["video"])
 templates = Jinja2Templates(directory="templates")
 
 
-@video_router.post('/')
+@video_router.post('/', response_model=UploadVideo)
 async def create_video(
         background_tasks: BackgroundTasks,
         title: str = Form(...),

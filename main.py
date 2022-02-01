@@ -6,6 +6,7 @@ from src.content.api import video_router
 from src.user.routers import user_router
 from src.followers.api import follower_router
 from src.product.api import product_router
+from src.board.api import board_router
 
 app = FastAPI()
 
@@ -29,6 +30,7 @@ async def shutdown() -> None:
 
 app.include_router(user_router)
 app.include_router(product_router)
+app.include_router(board_router)
 app.include_router(video_router)
 app.include_router(follower_router)
 add_pagination(app)

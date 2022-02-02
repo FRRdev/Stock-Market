@@ -1,13 +1,18 @@
+import ormar.exceptions
 from fastapi import APIRouter, Form, Depends
 from fastapi.responses import JSONResponse
 from typing import List
 
 from src.user.models import User
-from src.board.models import Board
-from .schemas import BoardList, BoardCreate
+from src.board.models import Board, Bet
+from .schemas import BoardList, BoardCreate, CreateBet
 
 from src.user.auth import current_active_user
-from .services import check_authors_product
+from .services import (
+    check_authors_product,
+    check_correct_bet,
+    check_correct_bet_date
+)
 
 board_router = APIRouter(prefix="/board", tags=["board"])
 
@@ -37,3 +42,29 @@ async def get_list_boards(
     """
     info = await Board.objects.select_related(["user", "product"]).all()
     return info
+
+
+@board_router.post('/bet/{board_pk}', response_model=CreateBet)
+async def make_bet(
+        board_pk: int,
+        bet: float = Form(...),
+        user: User = Depends(current_active_user)
+):
+    """Make bet by board id
+    """
+    try:
+        board = await Board.objects.select_related("product").get(pk=board_pk)
+    except ormar.exceptions.NoMatch:
+        return JSONResponse({"error": "This Board does not exist"})
+    if not await check_authors_product(user, board.product.id):
+        correct_bet_price, message = await check_correct_bet(board, bet)
+        if correct_bet_price:
+            correct_bet_date, message = await check_correct_bet_date(board)
+            if correct_bet_date:
+                return await Bet.objects.create(board=board_pk, user=user.id, rate=bet)
+            else:
+                return JSONResponse({"error": message})
+        else:
+            return JSONResponse({"error": message})
+    else:
+        return JSONResponse({"error": "You are author of this Board"})

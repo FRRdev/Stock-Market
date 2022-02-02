@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Form, Depends
 from fastapi.responses import JSONResponse
+from typing import List
 
 from src.user.models import User
 from src.board.models import Board
-from .schemas import BoardCreate
+from .schemas import BoardList, BoardCreate
 
 from src.user.auth import current_active_user
 from .services import check_authors_product
@@ -26,3 +27,13 @@ async def create_board(
             return await Board.objects.create(product=product, user=user.dict())
     else:
         return JSONResponse({"error": "You are not own this product!"})
+
+
+@board_router.get('/list', response_model=List[BoardList])
+async def get_list_boards(
+        user: User = Depends(current_active_user)
+):
+    """Get list boards router
+    """
+    info = await Board.objects.select_related(["user", "product"]).all()
+    return info

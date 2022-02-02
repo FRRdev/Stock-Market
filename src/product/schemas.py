@@ -23,6 +23,15 @@ class ListProduct(BaseModel):
     deadline_time: datetime.datetime
 
 
+class ListProductForBoard(BaseModel):
+    id: int
+    name: str
+    image: str
+    create_at: datetime.datetime
+    start_price: float
+    deadline_time: datetime.datetime
+
+
 class UploadComment(BaseModel):
     text: str
 

@@ -1,11 +1,12 @@
 import ormar.exceptions
-from fastapi import APIRouter, Form, Depends
+from fastapi import APIRouter, Form, Depends, Path
 from fastapi.responses import JSONResponse
 from typing import List
+import datetime
 
 from src.user.models import User
 from src.board.models import Board, Bet
-from .schemas import BoardList, BoardCreate, CreateBet
+from .schemas import BoardList, BoardCreate, CreateBet, BoardDetail
 
 from src.user.auth import current_active_user
 from .services import (
@@ -34,14 +35,32 @@ async def create_board(
         return JSONResponse({"error": "You are not own this product!"})
 
 
+@board_router.get('/{board_pk}', response_model=BoardDetail)
+async def get_board_info(
+        board_pk: int = Path(...),
+        user: User = Depends(current_active_user)
+):
+    """Get information about board
+    """
+    try:
+        board = await Board.objects.prefetch_related("board_bets").select_related(
+            ["user", "product", Board.board_bets.user]).get(pk=board_pk)
+    except ormar.exceptions.NoMatch:
+        return JSONResponse({"error": "This Board does not exist"})
+    board_info = board.dict()
+    deadline_time_board = board.product.deadline_time
+    board_info["deadline_time"] = deadline_time_board
+    board_info["active"] = True if datetime.datetime.now() < deadline_time_board else False
+    return board_info
+
+
 @board_router.get('/list', response_model=List[BoardList])
 async def get_list_boards(
         user: User = Depends(current_active_user)
 ):
     """Get list boards router
     """
-    info = await Board.objects.select_related(["user", "product"]).all()
-    return info
+    return await Board.objects.select_related(["user", "product"]).all()
 
 
 @board_router.post('/bet/{board_pk}', response_model=CreateBet)

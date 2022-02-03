@@ -1,7 +1,7 @@
-import datetime
-from typing import Optional, Union, Dict, List
-
 import ormar
+import datetime
+from typing import Optional, Union, Dict
+
 from db import MainMeta
 from src.user.models import User
 

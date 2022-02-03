@@ -1,10 +1,9 @@
+import datetime
 from fastapi import APIRouter, Form, UploadFile, File, Depends, Query, Path
 from fastapi_pagination import Page, paginate
 from fastapi.responses import JSONResponse
 from sqlite3 import IntegrityError
 from typing import List
-
-import datetime
 
 from src.user.models import User
 from src.user.auth import current_active_user

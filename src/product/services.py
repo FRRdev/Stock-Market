@@ -1,11 +1,11 @@
-from uuid import uuid4
 import ormar
 import os
+import datetime
+import aiofiles
 
 from fastapi import UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-import datetime
-import aiofiles
+from uuid import uuid4
 
 from src.user.models import User
 from .models import Product

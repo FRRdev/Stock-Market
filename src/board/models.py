@@ -1,10 +1,9 @@
 import datetime
-
 import ormar
+
+from typing import Optional, Union, Dict
+
 from db import MainMeta
-
-from typing import Optional, Union, Dict, List
-
 from src.product.models import Product
 from src.user.models import User
 
@@ -19,7 +18,6 @@ class Board(ormar.Model):
     id: int = ormar.Integer(primary_key=True)
     user: Optional[Union[User, Dict]] = ormar.ForeignKey(User, related_name='boards')
     product: Optional[Union[Product, Dict]] = ormar.ForeignKey(Product, related_name='product_boards', unique=True)
-
 
 
 class Bet(ormar.Model):

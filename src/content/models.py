@@ -1,14 +1,15 @@
 import datetime
+import ormar
 from typing import Optional, Union, Dict, List
 
-import ormar
 from db import MainMeta
-
 from src.user.models import User
 from src.product.models import Product
 
 
 class UserLike(ormar.Model):
+    """ Model user's like
+    """
     class Meta(MainMeta):
         pass
 
@@ -16,6 +17,8 @@ class UserLike(ormar.Model):
 
 
 class Video(ormar.Model):
+    """ Video model
+    """
     class Meta(MainMeta):
         pass
 

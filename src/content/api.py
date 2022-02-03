@@ -23,17 +23,23 @@ async def create_video(
         product: int = Form(...),
         user: User = Depends(current_active_user)
 ):
+    """ Create video router
+    """
     return await save_video(user, product, file, title, description, background_tasks)
 
 
 @video_router.get("/user/{user_pk}", response_model=List[GetListVideo])
 async def get_list_video(user_pk: str):
+    """ Get video's list by user's pk
+    """
     video_list = await Video.objects.filter(user=user_pk).all()
     return video_list
 
 
 @video_router.get("/video/{video_pk}")
 async def get_streaming_video(request: Request, video_pk: int) -> StreamingResponse:
+    """ Video playback
+    """
     file, status_code, content_length, headers = await open_file(request, video_pk)
     response = StreamingResponse(
         file,
@@ -51,6 +57,8 @@ async def get_streaming_video(request: Request, video_pk: int) -> StreamingRespo
 
 @video_router.get("/index/{video_pk}", response_class=HTMLResponse)
 async def get_video(request: Request, video_pk: int):
+    """ Render template with video
+    """
     return templates.TemplateResponse("index.html", {"request": request, "path": video_pk})
 
 
@@ -61,6 +69,8 @@ async def error_404(request: Request):
 
 @video_router.post("/{video_pk}", status_code=201)
 async def add_like(video_pk: int, user: User = Depends(current_active_user)):
+    """ Router to add like to video
+    """
     _video = await Video.objects.select_related("like_user").get(pk=video_pk)
     _user = await User.objects.get(id=user.id)
     if _user in _video.like_user:
@@ -71,10 +81,3 @@ async def add_like(video_pk: int, user: User = Depends(current_active_user)):
         await _video.like_user.add(_user)
     await _video.update()
     return _video.like_count
-
-# @video_router.post('/img', status_code=201)
-# async def upload_image(files: List[UploadFile] = File(...)):
-#     for img in files:
-#         with open(f'{img.filename}', 'wb') as buffer:
-#             shutil.copyfileobj(img.file, buffer)
-#     return {'file_name': 'Good'}

@@ -1,13 +1,13 @@
 import ormar.exceptions
+import datetime
+
 from fastapi import APIRouter, Form, Depends, Path
 from fastapi.responses import JSONResponse
 from typing import List
-import datetime
 
 from src.user.models import User
 from src.board.models import Board, Bet
 from .schemas import BoardList, BoardCreate, CreateBet, BoardDetail
-
 from src.user.auth import current_active_user
 from .services import (
     check_authors_product,

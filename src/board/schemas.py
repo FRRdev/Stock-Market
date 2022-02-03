@@ -1,8 +1,8 @@
-from pydantic import BaseModel
 import datetime
+
+from pydantic import BaseModel
 from typing import List
 
-from src import board
 from src.user.schemas import UserOut
 from src.product.schemas import IdProduct, ListProductForBoard
 

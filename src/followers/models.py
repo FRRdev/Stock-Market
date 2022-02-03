@@ -1,11 +1,14 @@
+import ormar
 from typing import Optional, Union, Dict
 
-import ormar
 from db import MainMeta
 from src.user.models import User
 
 
 class Follower(ormar.Model):
+    """ Follower model
+    """
+
     class Meta(MainMeta):
         pass
 

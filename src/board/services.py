@@ -1,4 +1,5 @@
 import datetime
+
 from typing import Tuple
 
 from src.user.models import User
